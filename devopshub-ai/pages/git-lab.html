@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Git Lab — DevOpsHub AI</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📦</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+#git-graph{min-height:160px;padding:1.25rem;display:flex;flex-direction:column;gap:8px;font-family:var(--font-m);font-size:.78rem}
+.graph-row{display:flex;align-items:center;gap:10px}
+.graph-dot{width:12px;height:12px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);flex-shrink:0}
+.graph-dot.merge{background:var(--violet);box-shadow:0 0 8px var(--violet)}
+.graph-branch-tag{font-size:.68rem;padding:1px 8px;border-radius:999px;background:rgba(0,230,160,.12);color:var(--green);border:1px solid rgba(0,230,160,.25)}
+.graph-head{font-size:.68rem;padding:1px 8px;border-radius:999px;background:rgba(0,240,255,.15);color:var(--cyan);border:1px solid rgba(0,240,255,.3)}
+</style>
+</head>
+<body>
+<div id="scroll-progress"></div>
+<div class="bg-grid"></div>
+
+<nav id="nav">
+  <a href="../index.html" class="nav-logo">
+    <div class="nav-logo-mark">⚙️</div>
+    <span class="nav-logo-text">DevOps<span>Hub</span> AI</span>
+  </a>
+  <div class="nav-links" id="nav-links">
+    <a href="../index.html">Home</a>
+    <a href="labs.html">Labs</a>
+    <a href="tools.html">Tools</a>
+    <a href="generators.html">Generators</a>
+    <a href="troubleshoot.html">Troubleshoot</a>
+    <a href="roadmap.html">Roadmap</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="interview.html">Interview Prep</a>
+    <a href="assistant.html">AI Assistant</a>
+  </div>
+  <div class="nav-cta">
+    <a href="assistant.html" class="btn btn-cyan btn-sm">Launch AI ✦</a>
+    <button class="nav-toggle" id="nav-toggle"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<main>
+<div class="page-hero" style="padding-bottom:30px">
+  <div class="eyebrow center" style="justify-content:center">Git & GitHub Center</div>
+  <h1>📦 Git Command Trainer</h1>
+  <p>Real branch and commit state. Run actual git commands and watch the graph update live.</p>
+</div>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="lab-layout reveal">
+      <div>
+        <div class="lab-term-wrap" style="margin-bottom:1.25rem">
+          <div class="lab-term-bar">
+            <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+            <span class="fname">user@devopshub:~/project</span>
+          </div>
+          <div id="terminal" style="min-height:340px"></div>
+        </div>
+        <div class="glass">
+          <div class="gen-output-bar" style="border-bottom:1px solid var(--border)">
+            <span>📊 Branch Graph (live)</span>
+          </div>
+          <div id="git-graph"></div>
+        </div>
+      </div>
+      <div class="lab-sidebar glass">
+        <h4>Try These Commands</h4>
+        <div class="lab-cmd-list" id="cmd-list">
+          <button class="lab-cmd-chip" data-cmd="git init">git init</button>
+          <button class="lab-cmd-chip" data-cmd="git add .">git add .</button>
+          <button class="lab-cmd-chip" data-cmd='git commit -m "Initial commit"'>git commit -m "..."</button>
+          <button class="lab-cmd-chip" data-cmd="git branch feature">git branch feature</button>
+          <button class="lab-cmd-chip" data-cmd="git checkout feature">git checkout feature</button>
+          <button class="lab-cmd-chip" data-cmd="git checkout main">git checkout main</button>
+          <button class="lab-cmd-chip" data-cmd="git merge feature">git merge feature</button>
+          <button class="lab-cmd-chip" data-cmd="git log">git log</button>
+          <button class="lab-cmd-chip" data-cmd="git status">git status</button>
+        </div>
+        <div class="lab-task-box">
+          <h5>🎯 Practice Task</h5>
+          Initialize a repo, commit on <code style="color:var(--cyan)">main</code>, create a <code style="color:var(--cyan)">feature</code> branch, commit again, then merge it back.
+        </div>
+        <button class="btn btn-ghost lab-reset-btn" onclick="resetLab()">↺ Reset Repository</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="footer-bottom" style="border-top:none;justify-content:center">
+    <p>© 2026 DevOpsHub AI · <a href="../index.html" style="color:var(--cyan)">Back to Home</a></p>
+  </div>
+</footer>
+
+<button id="back-top">↑</button>
+
+<script src="../data/git-sim.js"></script>
+<script src="../js/terminal-widget.js"></script>
+<script>
+let repo, term;
+
+function renderGraph() {
+  const { commits, branches, HEAD } = repo.getGraphData();
+  const container = document.getElementById('git-graph');
+  const hashes = Object.keys(commits).sort((a,b) => commits[a].timestamp - commits[b].timestamp);
+  if (!hashes.length) {
+    container.innerHTML = '<div style="color:var(--muted)">No commits yet — run git init, git add, and git commit to begin.</div>';
+    return;
+  }
+  container.innerHTML = hashes.map(h => {
+    const c = commits[h];
+    const tags = Object.entries(branches).filter(([name, hash]) => hash === h).map(([name]) =>
+      `<span class="graph-branch-tag">${name}</span>`
+    ).join('');
+    const isHead = HEAD === h || (branches[HEAD] === h);
+    return `<div class="graph-row">
+      <span class="graph-dot ${c.mergeParent ? 'merge' : ''}"></span>
+      <span style="color:var(--muted)">${c.hash}</span>
+      <span style="color:var(--text)">${c.message}</span>
+      ${tags}
+      ${isHead ? '<span class="graph-head">HEAD</span>' : ''}
+    </div>`;
+  }).join('');
+}
+
+function initLab() {
+  repo = createGitRepo();
+  const container = document.getElementById('terminal');
+  term = createTerminalWidget(container, {
+    prompt: 'user@devopshub:~/project$',
+    welcome: 'Welcome to the DevOpsHub Git Lab 📦\nRun "git init" to begin, then add, commit, branch, and merge.\n',
+    onCommand: (cmd) => {
+      const output = runGitCommand(repo, cmd);
+      renderGraph();
+      return output;
+    }
+  });
+  term.focus();
+  renderGraph();
+}
+
+function resetLab() { initLab(); }
+
+document.querySelectorAll('.lab-cmd-chip').forEach(btn => {
+  btn.addEventListener('click', () => {
+    term.runCommand(btn.dataset.cmd);
+    renderGraph();
+    term.focus();
+  });
+});
+
+initLab();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

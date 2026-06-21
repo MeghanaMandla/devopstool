@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Linux Terminal Lab — DevOpsHub AI</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐧</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div id="scroll-progress"></div>
+<div class="bg-grid"></div>
+
+<nav id="nav">
+  <a href="../index.html" class="nav-logo">
+    <div class="nav-logo-mark">⚙️</div>
+    <span class="nav-logo-text">DevOps<span>Hub</span> AI</span>
+  </a>
+  <div class="nav-links" id="nav-links">
+    <a href="../index.html">Home</a>
+    <a href="labs.html">Labs</a>
+    <a href="tools.html">Tools</a>
+    <a href="generators.html">Generators</a>
+    <a href="troubleshoot.html">Troubleshoot</a>
+    <a href="roadmap.html">Roadmap</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="interview.html">Interview Prep</a>
+    <a href="assistant.html">AI Assistant</a>
+  </div>
+  <div class="nav-cta">
+    <a href="assistant.html" class="btn btn-cyan btn-sm">Launch AI ✦</a>
+    <button class="nav-toggle" id="nav-toggle"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<main>
+<div class="page-hero" style="padding-bottom:30px">
+  <div class="eyebrow center" style="justify-content:center">Linux Command Center</div>
+  <h1>🐧 Linux Terminal Lab</h1>
+  <p>A real, working virtual filesystem. Type actual commands and get actual results — not a scripted animation.</p>
+</div>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="lab-layout reveal">
+      <div class="lab-term-wrap">
+        <div class="lab-term-bar">
+          <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+          <span class="fname">user@devopshub:~$</span>
+        </div>
+        <div id="terminal" style="min-height:460px"></div>
+      </div>
+      <div class="lab-sidebar glass">
+        <h4>Try These Commands</h4>
+        <div class="lab-cmd-list" id="cmd-list">
+          <button class="lab-cmd-chip" data-cmd="ls -l">ls -l</button>
+          <button class="lab-cmd-chip" data-cmd="cd projects">cd projects</button>
+          <button class="lab-cmd-chip" data-cmd="cat README.md">cat README.md</button>
+          <button class="lab-cmd-chip" data-cmd="cd ../logs">cd ../logs</button>
+          <button class="lab-cmd-chip" data-cmd="grep ERROR app.log">grep ERROR app.log</button>
+          <button class="lab-cmd-chip" data-cmd="ps">ps</button>
+          <button class="lab-cmd-chip" data-cmd="systemctl status nginx">systemctl status nginx</button>
+          <button class="lab-cmd-chip" data-cmd="df">df</button>
+          <button class="lab-cmd-chip" data-cmd="mkdir test && touch test/a.txt">mkdir + touch</button>
+          <button class="lab-cmd-chip" data-cmd="help">help (full list)</button>
+        </div>
+        <div class="lab-task-box">
+          <h5>🎯 Practice Task</h5>
+          Navigate into <code style="color:var(--cyan)">logs/</code>, then use <code style="color:var(--cyan)">grep</code> to find every <code style="color:var(--cyan)">ERROR</code> line in <code style="color:var(--cyan)">app.log</code>.
+        </div>
+        <button class="btn btn-ghost lab-reset-btn" onclick="resetLab()">↺ Reset Filesystem</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="footer-bottom" style="border-top:none;justify-content:center">
+    <p>© 2026 DevOpsHub AI · <a href="../index.html" style="color:var(--cyan)">Back to Home</a></p>
+  </div>
+</footer>
+
+<button id="back-top">↑</button>
+
+<script src="../data/linux-vfs.js"></script>
+<script src="../js/terminal-widget.js"></script>
+<script>
+let vfs, engine, term;
+
+function getPrompt() {
+  const cwd = vfs.getCwd();
+  const display = cwd === '/home/user' ? '~' : cwd.replace('/home/user', '~');
+  return `user@devopshub:${display}$`;
+}
+
+function initLab() {
+  vfs = createVFS();
+  engine = makeLinuxEngine(vfs);
+  const container = document.getElementById('terminal');
+  term = createTerminalWidget(container, {
+    prompt: getPrompt(),
+    welcome: 'Welcome to the DevOpsHub Linux Lab 🐧\nA real virtual filesystem — try: ls, cd, cat, mkdir, ps, systemctl, grep…\nType "help" for the full command list.\n',
+    onCommand: (cmd) => {
+      const output = runLinuxCommand(engine, vfs, cmd);
+      term.setPrompt(getPrompt());
+      return output;
+    }
+  });
+  term.focus();
+}
+
+function resetLab() {
+  initLab();
+}
+
+document.querySelectorAll('.lab-cmd-chip').forEach(btn => {
+  btn.addEventListener('click', () => {
+    term.runCommand(btn.dataset.cmd);
+    term.setPrompt(getPrompt());
+    term.focus();
+  });
+});
+
+initLab();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

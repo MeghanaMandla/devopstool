@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Assistant — DevOpsHub AI</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div id="scroll-progress"></div>
+<div class="bg-grid"></div>
+
+<nav id="nav">
+  <a href="../index.html" class="nav-logo">
+    <div class="nav-logo-mark">⚙️</div>
+    <span class="nav-logo-text">DevOps<span>Hub</span> AI</span>
+  </a>
+  <div class="nav-links" id="nav-links">
+    <a href="../index.html">Home</a>
+    <a href="labs.html">Labs</a>
+    <a href="tools.html">Tools</a>
+    <a href="generators.html">Generators</a>
+    <a href="troubleshoot.html">Troubleshoot</a>
+    <a href="roadmap.html">Roadmap</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="interview.html">Interview Prep</a>
+    <a href="resume.html">Resume</a>
+    <a href="assistant.html" class="active">AI Assistant</a>
+  </div>
+  <div class="nav-cta">
+    <button class="nav-toggle" id="nav-toggle"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<main>
+<div class="page-hero" style="padding-bottom:30px">
+  <div class="eyebrow center" style="justify-content:center"><span class="live-dot"></span>&nbsp; Powered by Claude AI</div>
+  <h1>DevOps AI Assistant</h1>
+  <p>Troubleshoot errors, generate YAML, explain concepts, or ask anything DevOps.</p>
+</div>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="chat-shell reveal">
+      <div class="chat-window glass">
+        <div class="chat-msgs" id="chatMsgs">
+          <div class="chat-empty" id="chatEmpty">
+            <div style="font-size:2.5rem;margin-bottom:1rem">🤖</div>
+            <h3 style="font-family:var(--font-d);color:#fff;margin-bottom:.5rem">Hi, I'm your DevOps AI Assistant</h3>
+            <p>Ask me to debug an error, write a Dockerfile, explain a concept, or anything else.</p>
+          </div>
+        </div>
+        <div class="chat-suggestions" id="chatSuggestions">
+          <div class="chat-suggest-chip" onclick="askSuggestion(this)">Why is my pod CrashLoopBackOff?</div>
+          <div class="chat-suggest-chip" onclick="askSuggestion(this)">Explain Kubernetes Services</div>
+          <div class="chat-suggest-chip" onclick="askSuggestion(this)">Write a GitHub Actions workflow</div>
+          <div class="chat-suggest-chip" onclick="askSuggestion(this)">Docker vs Kubernetes?</div>
+        </div>
+        <div class="chat-input-row">
+          <textarea id="chatInput" placeholder="Ask about Docker, Kubernetes, CI/CD, Linux, AWS…" rows="1"></textarea>
+          <button class="chat-send" id="sendBtn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="chat-sidebar glass">
+        <h4>Capabilities</h4>
+        <div class="chat-cap">🚨 <span>Debug errors & exceptions</span></div>
+        <div class="chat-cap">📄 <span>Generate YAML & Dockerfiles</span></div>
+        <div class="chat-cap">💡 <span>Explain DevOps concepts</span></div>
+        <div class="chat-cap">🔁 <span>Design CI/CD pipelines</span></div>
+        <div class="chat-cap">✅ <span>Suggest best practices</span></div>
+        <div style="height:1px;background:var(--border);margin:1rem 0"></div>
+        <h4>Quick Links</h4>
+        <div class="chat-cap"><a href="generators.html" style="color:var(--cyan)">→ Open Generators</a></div>
+        <div class="chat-cap"><a href="troubleshoot.html" style="color:var(--cyan)">→ Troubleshooting DB</a></div>
+        <div class="chat-cap"><a href="tools.html" style="color:var(--cyan)">→ Linux Commands</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="footer-bottom" style="border-top:none;justify-content:center">
+    <p>© 2026 DevOpsHub AI · <a href="../index.html" style="color:var(--cyan)">Back to Home</a></p>
+  </div>
+</footer>
+
+<script>
+let messages = [];
+let busy = false;
+
+const chatMsgs = document.getElementById('chatMsgs');
+const chatEmpty = document.getElementById('chatEmpty');
+const chatInput = document.getElementById('chatInput');
+const sendBtn = document.getElementById('sendBtn');
+const suggestions = document.getElementById('chatSuggestions');
+
+chatInput.addEventListener('input', () => {
+  chatInput.style.height = 'auto';
+  chatInput.style.height = Math.min(chatInput.scrollHeight, 100) + 'px';
+});
+chatInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+});
+sendBtn.addEventListener('click', sendMessage);
+
+function askSuggestion(el) {
+  chatInput.value = el.textContent;
+  sendMessage();
+}
+
+function appendMsg(role, text) {
+  if (chatEmpty) chatEmpty.style.display = 'none';
+  suggestions.style.display = 'none';
+  const wrap = document.createElement('div');
+  wrap.className = `msg ${role}`;
+  const bubble = document.createElement('div');
+  bubble.className = 'msg-bubble';
+  bubble.innerHTML = text
+    .replace(/```(\w+)?\n?([\s\S]*?)```/g, '<pre><code>$2</code></pre>')
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\n/g, '<br>');
+  wrap.appendChild(bubble);
+  chatMsgs.appendChild(wrap);
+  chatMsgs.scrollTop = chatMsgs.scrollHeight;
+  return bubble;
+}
+
+function showThinking() {
+  const wrap = document.createElement('div');
+  wrap.className = 'msg ai';
+  wrap.id = 'thinkingMsg';
+  wrap.innerHTML = `<div class="thinking"><span></span><span></span><span></span></div>`;
+  chatMsgs.appendChild(wrap);
+  chatMsgs.scrollTop = chatMsgs.scrollHeight;
+}
+function removeThinking() {
+  document.getElementById('thinkingMsg')?.remove();
+}
+
+const SYSTEM = `You are the DevOpsHub AI Assistant, an expert DevOps engineer assistant embedded in a free platform called DevOpsHub AI.
+
+You help with: Docker, Kubernetes, CI/CD (GitHub Actions, Jenkins, GitLab CI), Linux administration, AWS/Azure/GCP, Terraform, Ansible, monitoring (Prometheus/Grafana), and general DevOps best practices.
+
+Be concise, technical, and practical. When giving commands or YAML, use proper markdown code blocks. When debugging errors, ask only ONE clarifying question if truly needed, otherwise give your best diagnosis with the most likely causes and fixes.
+
+The platform also has standalone generators for Dockerfiles, K8s YAML, Terraform, Ansible, CI/CD pipelines, a troubleshooting database, a Linux command finder, an interview prep section, and a resume builder — mention these when relevant so users know where to find more.`;
+
+async function sendMessage() {
+  const text = chatInput.value.trim();
+  if (!text || busy) return;
+  appendMsg('user', text);
+  messages.push({ role: 'user', content: text });
+  chatInput.value = ''; chatInput.style.height = 'auto';
+  busy = true; sendBtn.disabled = true;
+  showThinking();
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1200,
+        system: SYSTEM,
+        messages: messages
+      })
+    });
+    const data = await response.json();
+    removeThinking();
+    const reply = data.content?.[0]?.text || "Sorry, I couldn't generate a response. Please try again.";
+    appendMsg('ai', reply);
+    messages.push({ role: 'assistant', content: reply });
+  } catch (err) {
+    removeThinking();
+    appendMsg('ai', '⚠️ Connection error. Please check your internet and try again. In the meantime, check the [Troubleshooting Center](troubleshoot.html) or [Generators](generators.html) directly.');
+  }
+  busy = false; sendBtn.disabled = false;
+  chatInput.focus();
+}
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

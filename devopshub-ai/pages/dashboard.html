@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monitoring Dashboard — DevOpsHub AI</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚙️</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+canvas#liveChart{width:100%;height:200px}
+</style>
+</head>
+<body>
+<div id="scroll-progress"></div>
+<div class="bg-grid"></div>
+
+<nav id="nav">
+  <a href="../index.html" class="nav-logo">
+    <div class="nav-logo-mark">⚙️</div>
+    <span class="nav-logo-text">DevOps<span>Hub</span> AI</span>
+  </a>
+  <div class="nav-links" id="nav-links">
+    <a href="../index.html">Home</a>
+    <a href="labs.html">Labs</a>
+    <a href="tools.html">Tools</a>
+    <a href="generators.html">Generators</a>
+    <a href="troubleshoot.html">Troubleshoot</a>
+    <a href="roadmap.html">Roadmap</a>
+    <a href="dashboard.html" class="active">Dashboard</a>
+    <a href="interview.html">Interview Prep</a>
+    <a href="resume.html">Resume</a>
+    <a href="assistant.html">AI Assistant</a>
+  </div>
+  <div class="nav-cta">
+    <a href="assistant.html" class="btn btn-cyan btn-sm">Launch AI ✦</a>
+    <button class="nav-toggle" id="nav-toggle"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<main>
+<div class="page-hero">
+  <div class="eyebrow center" style="justify-content:center"><span class="live-dot"></span>&nbsp; Simulated Live Data</div>
+  <h1>Monitoring Dashboard</h1>
+  <p>A Prometheus + Grafana-style view of cluster health. Numbers refresh every 2 seconds.</p>
+</div>
+
+<section>
+  <div class="wrap">
+    <div class="dash-grid reveal">
+      <div class="dash-card glass">
+        <div class="dash-label">CPU Usage</div>
+        <div class="dash-value" id="cpu-val">0%</div>
+        <div class="dash-bar-track"><div class="dash-bar-fill" id="cpu-bar" style="background:var(--cyan)"></div></div>
+      </div>
+      <div class="dash-card glass">
+        <div class="dash-label">RAM Usage</div>
+        <div class="dash-value" id="ram-val">0%</div>
+        <div class="dash-bar-track"><div class="dash-bar-fill" id="ram-bar" style="background:var(--violet)"></div></div>
+      </div>
+      <div class="dash-card glass">
+        <div class="dash-label">Disk Usage</div>
+        <div class="dash-value" id="disk-val">0%</div>
+        <div class="dash-bar-track"><div class="dash-bar-fill" id="disk-bar" style="background:var(--amber)"></div></div>
+      </div>
+      <div class="dash-card glass">
+        <div class="dash-label">Network Traffic</div>
+        <div class="dash-value" id="net-val">0 MB/s</div>
+        <div class="dash-bar-track"><div class="dash-bar-fill" id="net-bar" style="background:var(--green)"></div></div>
+      </div>
+    </div>
+
+    <div class="dash-chart-wrap glass reveal">
+      <div class="dash-chart-title">📈 CPU Usage — Last 60 seconds</div>
+      <canvas id="liveChart"></canvas>
+    </div>
+
+    <div class="gen-panel reveal" style="margin-top:1.5rem">
+      <div class="dash-chart-wrap glass" style="margin:0">
+        <div class="dash-chart-title">🐳 Running Containers</div>
+        <div class="pod-list" id="container-list"></div>
+      </div>
+      <div class="dash-chart-wrap glass" style="margin:0">
+        <div class="dash-chart-title">☸️ Kubernetes Pods</div>
+        <div class="pod-list" id="pod-list"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="footer-bottom" style="border-top:none;justify-content:center">
+    <p>© 2026 DevOpsHub AI · <a href="../index.html" style="color:var(--cyan)">Back to Home</a></p>
+  </div>
+</footer>
+
+<button id="back-top">↑</button>
+
+<script>
+// ===== Simulated metrics =====
+let cpuHistory = Array(40).fill(30);
+
+function rand(min, max) { return Math.random() * (max - min) + min; }
+
+function updateMetrics() {
+  const cpu = Math.max(8, Math.min(95, cpuHistory[cpuHistory.length-1] + rand(-8, 8)));
+  const ram = rand(35, 72);
+  const disk = rand(40, 65);
+  const net = rand(2, 48);
+
+  cpuHistory.push(cpu); cpuHistory.shift();
+
+  document.getElementById('cpu-val').textContent = cpu.toFixed(1) + '%';
+  document.getElementById('cpu-bar').style.width = cpu + '%';
+  document.getElementById('ram-val').textContent = ram.toFixed(1) + '%';
+  document.getElementById('ram-bar').style.width = ram + '%';
+  document.getElementById('disk-val').textContent = disk.toFixed(1) + '%';
+  document.getElementById('disk-bar').style.width = disk + '%';
+  document.getElementById('net-val').textContent = net.toFixed(1) + ' MB/s';
+  document.getElementById('net-bar').style.width = Math.min(100, net*2) + '%';
+
+  drawChart();
+}
+
+function drawChart() {
+  const canvas = document.getElementById('liveChart');
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  const w = canvas.clientWidth, h = canvas.clientHeight;
+  canvas.width = w * dpr; canvas.height = h * dpr;
+  ctx.scale(dpr, dpr);
+  ctx.clearRect(0, 0, w, h);
+
+  // grid lines
+  ctx.strokeStyle = 'rgba(0,240,255,.06)';
+  ctx.lineWidth = 1;
+  for (let i = 0; i <= 4; i++) {
+    const y = (h/4) * i;
+    ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(w,y); ctx.stroke();
+  }
+
+  // line
+  const max = 100, step = w / (cpuHistory.length - 1);
+  ctx.beginPath();
+  cpuHistory.forEach((v, i) => {
+    const x = i * step, y = h - (v/max) * h;
+    i === 0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+  });
+  ctx.strokeStyle = '#00f0ff';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // fill gradient
+  const grad = ctx.createLinearGradient(0,0,0,h);
+  grad.addColorStop(0, 'rgba(0,240,255,.25)');
+  grad.addColorStop(1, 'rgba(0,240,255,0)');
+  ctx.lineTo(w, h); ctx.lineTo(0, h); ctx.closePath();
+  ctx.fillStyle = grad; ctx.fill();
+}
+
+const CONTAINERS = [
+  { name: 'nginx-proxy', status: 'running', meta: 'up 4d · 12 MB' },
+  { name: 'api-server', status: 'running', meta: 'up 2h · 84 MB' },
+  { name: 'redis-cache', status: 'running', meta: 'up 4d · 8 MB' },
+  { name: 'postgres-db', status: 'running', meta: 'up 4d · 210 MB' },
+  { name: 'worker-queue', status: 'pending', meta: 'restarting…' },
+];
+const PODS = [
+  { name: 'frontend-7d9f-x8k2p', status: 'running', meta: '1/1 ready' },
+  { name: 'backend-5c8b-m2n9q', status: 'running', meta: '1/1 ready' },
+  { name: 'backend-5c8b-p7r3t', status: 'running', meta: '1/1 ready' },
+  { name: 'cache-redis-0', status: 'running', meta: '1/1 ready' },
+  { name: 'migration-job-2x9k', status: 'crash', meta: 'CrashLoopBackOff' },
+];
+
+function renderLists() {
+  document.getElementById('container-list').innerHTML = CONTAINERS.map(c => `
+    <div class="pod-row"><span class="pod-status ${c.status}"></span><span class="pod-name">${c.name}</span><span class="pod-meta">${c.meta}</span></div>
+  `).join('');
+  document.getElementById('pod-list').innerHTML = PODS.map(p => `
+    <div class="pod-row"><span class="pod-status ${p.status}"></span><span class="pod-name">${p.name}</span><span class="pod-meta">${p.meta}</span></div>
+  `).join('');
+}
+
+renderLists();
+updateMetrics();
+setInterval(updateMetrics, 2000);
+window.addEventListener('resize', drawChart);
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

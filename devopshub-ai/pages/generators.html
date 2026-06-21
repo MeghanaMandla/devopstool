@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generators — DevOpsHub AI</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚙️</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div id="scroll-progress"></div>
+<div class="bg-grid"></div>
+
+<nav id="nav">
+  <a href="../index.html" class="nav-logo">
+    <div class="nav-logo-mark">⚙️</div>
+    <span class="nav-logo-text">DevOps<span>Hub</span> AI</span>
+  </a>
+  <div class="nav-links" id="nav-links">
+    <a href="../index.html">Home</a>
+    <a href="labs.html">Labs</a>
+    <a href="tools.html">Tools</a>
+    <a href="generators.html" class="active">Generators</a>
+    <a href="troubleshoot.html">Troubleshoot</a>
+    <a href="roadmap.html">Roadmap</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="interview.html">Interview Prep</a>
+    <a href="resume.html">Resume</a>
+    <a href="assistant.html">AI Assistant</a>
+  </div>
+  <div class="nav-cta">
+    <a href="assistant.html" class="btn btn-cyan btn-sm">Launch AI ✦</a>
+    <button class="nav-toggle" id="nav-toggle"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<main>
+<div class="page-hero">
+  <div class="eyebrow center" style="justify-content:center">Generators</div>
+  <h1>Config Generators</h1>
+  <p>Fill in the form, copy or download production-ready configs. Everything runs in your browser.</p>
+</div>
+
+<!-- JUMP TABS -->
+<div class="wrap">
+  <div class="ts-filters reveal">
+    <a href="#docker" class="chip">🐳 Docker</a>
+    <a href="#dockerfile" class="chip">📄 Dockerfile</a>
+    <a href="#k8s" class="chip">☸️ Kubernetes</a>
+    <a href="#cicd" class="chip">🔁 CI/CD</a>
+    <a href="#iac" class="chip">🏗️ Terraform</a>
+    <a href="#ansible" class="chip">🔧 Ansible</a>
+  </div>
+</div>
+
+<!-- DOCKER RUN GENERATOR -->
+<section id="docker">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">Docker Toolkit</div>
+      <h2 class="sec-title">Docker Run Command Generator</h2>
+      <p class="sec-sub">Enter your container details to generate a ready-to-use docker run command.</p>
+    </div>
+    <div class="gen-panel reveal">
+      <div class="gen-form glass">
+        <div class="form-row">
+          <label>Image Name</label>
+          <input type="text" class="form-input" id="d-image" placeholder="nginx:latest" value="nginx:latest" oninput="genDockerRun()">
+        </div>
+        <div class="form-row">
+          <label>Container Name</label>
+          <input type="text" class="form-input" id="d-name" placeholder="my-app" value="my-app" oninput="genDockerRun()">
+        </div>
+        <div class="form-grid2">
+          <div class="form-row">
+            <label>Host Port</label>
+            <input type="text" class="form-input" id="d-hport" placeholder="8080" value="8080" oninput="genDockerRun()">
+          </div>
+          <div class="form-row">
+            <label>Container Port</label>
+            <input type="text" class="form-input" id="d-cport" placeholder="80" value="80" oninput="genDockerRun()">
+          </div>
+        </div>
+        <div class="form-row">
+          <label>Environment Variables (KEY=value, one per line)</label>
+          <textarea class="form-textarea" id="d-env" rows="3" placeholder="NODE_ENV=production&#10;API_KEY=your_key" oninput="genDockerRun()"></textarea>
+        </div>
+        <div class="form-row">
+          <label>Options</label>
+          <div class="chip-select">
+            <button type="button" class="chip active" id="d-detach" onclick="this.classList.toggle('active');genDockerRun()">-d (detached)</button>
+            <button type="button" class="chip active" id="d-restart" onclick="this.classList.toggle('active');genDockerRun()">--restart unless-stopped</button>
+            <button type="button" class="chip" id="d-volume" onclick="this.classList.toggle('active');genDockerRun()">-v volume</button>
+          </div>
+        </div>
+      </div>
+      <div class="gen-output glass">
+        <div class="gen-output-bar">
+          <span>$ docker run …</span>
+          <button class="copy-btn" onclick="copyToClipboard('docker-output', this)">Copy</button>
+        </div>
+        <pre class="gen-code" id="docker-output"></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DOCKERFILE GENERATOR -->
+<section id="dockerfile">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">Docker Toolkit</div>
+      <h2 class="sec-title">Dockerfile Generator</h2>
+      <p class="sec-sub">Select a stack to generate a production-ready, multi-stage Dockerfile.</p>
+    </div>
+    <div class="gen-panel reveal">
+      <div class="gen-form glass">
+        <div class="form-row">
+          <label>Stack</label>
+          <div class="chip-select" id="df-stack">
+            <button type="button" class="chip active" data-stack="node" onclick="selectChip(this,'df-stack');genDockerfile()">Node.js</button>
+            <button type="button" class="chip" data-stack="python" onclick="selectChip(this,'df-stack');genDockerfile()">Python</button>
+            <button type="button" class="chip" data-stack="java" onclick="selectChip(this,'df-stack');genDockerfile()">Java</button>
+            <button type="button" class="chip" data-stack="react" onclick="selectChip(this,'df-stack');genDockerfile()">React</button>
+          </div>
+        </div>
+        <div class="form-row">
+          <label>App Port</label>
+          <input type="text" class="form-input" id="df-port" value="3000" oninput="genDockerfile()">
+        </div>
+        <p style="font-size:.82rem;color:var(--muted);line-height:1.7;margin-top:.5rem">
+          This generates a <strong style="color:var(--cyan)">multi-stage build</strong> — small final image, build tools discarded.
+        </p>
+      </div>
+      <div class="gen-output glass">
+        <div class="gen-output-bar">
+          <span>Dockerfile</span>
+          <span style="display:flex;gap:.5rem">
+            <button class="copy-btn" onclick="downloadFile(document.getElementById('dockerfile-output').textContent,'Dockerfile')">Download</button>
+            <button class="copy-btn" onclick="copyToClipboard('dockerfile-output', this)">Copy</button>
+          </span>
+        </div>
+        <pre class="gen-code" id="dockerfile-output"></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- K8S GENERATOR -->
+<section id="k8s">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">Kubernetes Hub</div>
+      <h2 class="sec-title">Kubernetes YAML Generator</h2>
+      <p class="sec-sub">Generate Deployment, Service, Ingress and ConfigMap manifests in one shot.</p>
+    </div>
+    <div class="gen-panel reveal">
+      <div class="gen-form glass">
+        <div class="form-row">
+          <label>App Name</label>
+          <input type="text" class="form-input" id="k-name" value="my-app" oninput="genK8s()">
+        </div>
+        <div class="form-row">
+          <label>Image</label>
+          <input type="text" class="form-input" id="k-image" value="myrepo/my-app:latest" oninput="genK8s()">
+        </div>
+        <div class="form-grid2">
+          <div class="form-row">
+            <label>Container Port</label>
+            <input type="text" class="form-input" id="k-port" value="8080" oninput="genK8s()">
+          </div>
+          <div class="form-row">
+            <label>Replicas</label>
+            <input type="text" class="form-input" id="k-replicas" value="3" oninput="genK8s()">
+          </div>
+        </div>
+        <div class="form-row">
+          <label>Include</label>
+          <div class="chip-select">
+            <button type="button" class="chip active" id="k-svc" onclick="this.classList.toggle('active');genK8s()">Service</button>
+            <button type="button" class="chip active" id="k-ing" onclick="this.classList.toggle('active');genK8s()">Ingress</button>
+            <button type="button" class="chip" id="k-cm" onclick="this.classList.toggle('active');genK8s()">ConfigMap</button>
+          </div>
+        </div>
+      </div>
+      <div class="gen-output glass">
+        <div class="gen-output-bar">
+          <span>deployment.yaml</span>
+          <span style="display:flex;gap:.5rem">
+            <button class="copy-btn" onclick="downloadFile(document.getElementById('k8s-output').textContent,'k8s-manifests.yaml')">Download</button>
+            <button class="copy-btn" onclick="copyToClipboard('k8s-output', this)">Copy</button>
+          </span>
+        </div>
+        <pre class="gen-code" id="k8s-output"></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CI/CD GENERATOR -->
+<section id="cicd">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">CI/CD Builder</div>
+      <h2 class="sec-title">Pipeline Generator</h2>
+      <p class="sec-sub">Choose a platform and customize your build → test → deploy stages.</p>
+    </div>
+    <div class="gen-panel reveal">
+      <div class="gen-form glass">
+        <div class="form-row">
+          <label>Platform</label>
+          <div class="chip-select" id="ci-platform">
+            <button type="button" class="chip active" data-platform="github" onclick="selectChip(this,'ci-platform');genCICD()">GitHub Actions</button>
+            <button type="button" class="chip" data-platform="jenkins" onclick="selectChip(this,'ci-platform');genCICD()">Jenkins</button>
+            <button type="button" class="chip" data-platform="gitlab" onclick="selectChip(this,'ci-platform');genCICD()">GitLab CI</button>
+          </div>
+        </div>
+        <div class="form-row">
+          <label>Node/Runtime Version</label>
+          <input type="text" class="form-input" id="ci-version" value="20" oninput="genCICD()">
+        </div>
+        <div class="form-row">
+          <label>Stages</label>
+          <div class="chip-select">
+            <button type="button" class="chip active" id="ci-build" onclick="this.classList.toggle('active');genCICD()">Build</button>
+            <button type="button" class="chip active" id="ci-test" onclick="this.classList.toggle('active');genCICD()">Test</button>
+            <button type="button" class="chip active" id="ci-deploy" onclick="this.classList.toggle('active');genCICD()">Deploy</button>
+            <button type="button" class="chip" id="ci-docker" onclick="this.classList.toggle('active');genCICD()">Docker Build & Push</button>
+          </div>
+        </div>
+      </div>
+      <div class="gen-output glass">
+        <div class="gen-output-bar">
+          <span id="ci-filename">.github/workflows/ci.yml</span>
+          <span style="display:flex;gap:.5rem">
+            <button class="copy-btn" onclick="downloadFile(document.getElementById('cicd-output').textContent,document.getElementById('ci-filename').textContent.split('/').pop())">Download</button>
+            <button class="copy-btn" onclick="copyToClipboard('cicd-output', this)">Copy</button>
+          </span>
+        </div>
+        <pre class="gen-code" id="cicd-output"></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TERRAFORM GENERATOR -->
+<section id="iac">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">Infrastructure as Code</div>
+      <h2 class="sec-title">Terraform Generator</h2>
+      <p class="sec-sub">Generate a Terraform resource block for common AWS infrastructure.</p>
+    </div>
+    <div class="gen-panel reveal">
+      <div class="gen-form glass">
+        <div class="form-row">
+          <label>Resource Type</label>
+          <div class="chip-select" id="tf-type">
+            <button type="button" class="chip active" data-type="ec2" onclick="selectChip(this,'tf-type');genTerraform()">EC2 Instance</button>
+            <button type="button" class="chip" data-type="s3" onclick="selectChip(this,'tf-type');genTerraform()">S3 Bucket</button>
+            <button type="button" class="chip" data-type="vpc" onclick="selectChip(this,'tf-type');genTerraform()">VPC</button>
+          </div>
+        </div>
+        <div class="form-row">
+          <label>Resource Name</label>
+          <input type="text" class="form-input" id="tf-name" value="web_server" oninput="genTerraform()">
+        </div>
+        <div class="form-row">
+          <label>Region</label>
+          <input type="text" class="form-input" id="tf-region" value="us-east-1" oninput="genTerraform()">
+        </div>
+      </div>
+      <div class="gen-output glass">
+        <div class="gen-output-bar">
+          <span>main.tf</span>
+          <span style="display:flex;gap:.5rem">
+            <button class="copy-btn" onclick="downloadFile(document.getElementById('tf-output').textContent,'main.tf')">Download</button>
+            <button class="copy-btn" onclick="copyToClipboard('tf-output', this)">Copy</button>
+          </span>
+        </div>
+        <pre class="gen-code" id="tf-output"></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ANSIBLE GENERATOR -->
+<section id="ansible">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">Infrastructure as Code</div>
+      <h2 class="sec-title">Ansible Playbook Generator</h2>
+      <p class="sec-sub">Generate a playbook for common configuration management tasks.</p>
+    </div>
+    <div class="gen-panel reveal">
+      <div class="gen-form glass">
+        <div class="form-row">
+          <label>Task Type</label>
+          <div class="chip-select" id="an-type">
+            <button type="button" class="chip active" data-type="webserver" onclick="selectChip(this,'an-type');genAnsible()">Install Web Server</button>
+            <button type="button" class="chip" data-type="docker" onclick="selectChip(this,'an-type');genAnsible()">Install Docker</button>
+            <button type="button" class="chip" data-type="user" onclick="selectChip(this,'an-type');genAnsible()">Create User + SSH Key</button>
+          </div>
+        </div>
+        <div class="form-row">
+          <label>Target Hosts</label>
+          <input type="text" class="form-input" id="an-hosts" value="webservers" oninput="genAnsible()">
+        </div>
+      </div>
+      <div class="gen-output glass">
+        <div class="gen-output-bar">
+          <span>playbook.yml</span>
+          <span style="display:flex;gap:.5rem">
+            <button class="copy-btn" onclick="downloadFile(document.getElementById('an-output').textContent,'playbook.yml')">Download</button>
+            <button class="copy-btn" onclick="copyToClipboard('an-output', this)">Copy</button>
+          </span>
+        </div>
+        <pre class="gen-code" id="an-output"></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="footer-bottom" style="border-top:none;justify-content:center">
+    <p>© 2026 DevOpsHub AI · <a href="../index.html" style="color:var(--cyan)">Back to Home</a></p>
+  </div>
+</footer>
+
+<button id="back-top">↑</button>
+
+<script>
+function selectChip(el, groupId) {
+  document.getElementById(groupId).querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ===== DOCKER RUN =====
+function genDockerRun() {
+  const image = document.getElementById('d-image').value || 'nginx:latest';
+  const name = document.getElementById('d-name').value || 'my-app';
+  const hport = document.getElementById('d-hport').value || '8080';
+  const cport = document.getElementById('d-cport').value || '80';
+  const envRaw = document.getElementById('d-env').value;
+  const detach = document.getElementById('d-detach').classList.contains('active');
+  const restart = document.getElementById('d-restart').classList.contains('active');
+  const volume = document.getElementById('d-volume').classList.contains('active');
+
+  let cmd = 'docker run';
+  if (detach) cmd += ' -d';
+  cmd += ` --name ${name}`;
+  cmd += ` -p ${hport}:${cport}`;
+  if (volume) cmd += ` -v ${name}_data:/data`;
+  envRaw.split('\n').filter(l => l.trim()).forEach(line => {
+    cmd += ` -e ${line.trim()}`;
+  });
+  if (restart) cmd += ' --restart unless-stopped';
+  cmd += ` ${image}`;
+
+  document.getElementById('docker-output').textContent = cmd;
+}
+
+// ===== DOCKERFILE =====
+const DOCKERFILE_TEMPLATES = {
+  node: (port) => `# ── Build stage ──
+FROM node:20-alpine AS build
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+COPY . .
+RUN npm run build 2>/dev/null || true
+
+# ── Production stage ──
+FROM node:20-alpine
+WORKDIR /app
+ENV NODE_ENV=production
+COPY --from=build /app .
+EXPOSE ${port}
+USER node
+CMD ["node", "index.js"]`,
+  python: (port) => `# ── Build stage ──
+FROM python:3.12-slim AS build
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir --user -r requirements.txt
+
+# ── Production stage ──
+FROM python:3.12-slim
+WORKDIR /app
+COPY --from=build /root/.local /root/.local
+COPY . .
+ENV PATH=/root/.local/bin:$PATH
+EXPOSE ${port}
+CMD ["python", "app.py"]`,
+  java: (port) => `# ── Build stage ──
+FROM maven:3.9-eclipse-temurin-21 AS build
+WORKDIR /app
+COPY pom.xml .
+RUN mvn dependency:go-offline
+COPY src ./src
+RUN mvn package -DskipTests
+
+# ── Production stage ──
+FROM eclipse-temurin:21-jre-alpine
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
+EXPOSE ${port}
+ENTRYPOINT ["java", "-jar", "app.jar"]`,
+  react: (port) => `# ── Build stage ──
+FROM node:20-alpine AS build
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+
+# ── Production stage (Nginx) ──
+FROM nginx:alpine
+COPY --from=build /app/dist /usr/share/nginx/html
+EXPOSE ${port}
+CMD ["nginx", "-g", "daemon off;"]`,
+};
+function genDockerfile() {
+  const stack = document.querySelector('#df-stack .chip.active').dataset.stack;
+  const port = document.getElementById('df-port').value || '3000';
+  document.getElementById('dockerfile-output').textContent = DOCKERFILE_TEMPLATES[stack](port);
+}
+
+// ===== K8S YAML =====
+function genK8s() {
+  const name = document.getElementById('k-name').value || 'my-app';
+  const image = document.getElementById('k-image').value || 'myrepo/my-app:latest';
+  const port = document.getElementById('k-port').value || '8080';
+  const replicas = document.getElementById('k-replicas').value || '3';
+  const wantSvc = document.getElementById('k-svc').classList.contains('active');
+  const wantIng = document.getElementById('k-ing').classList.contains('active');
+  const wantCm = document.getElementById('k-cm').classList.contains('active');
+
+  let yaml = `apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ${name}
+  labels:
+    app: ${name}
+spec:
+  replicas: ${replicas}
+  selector:
+    matchLabels:
+      app: ${name}
+  template:
+    metadata:
+      labels:
+        app: ${name}
+    spec:
+      containers:
+        - name: ${name}
+          image: ${image}
+          ports:
+            - containerPort: ${port}
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: ${port}
+            initialDelaySeconds: 10
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /
+              port: ${port}
+            initialDelaySeconds: 5
+            periodSeconds: 10
+`;
+
+  if (wantSvc) {
+    yaml += `---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ${name}-svc
+spec:
+  selector:
+    app: ${name}
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: ${port}
+  type: ClusterIP
+`;
+  }
+
+  if (wantIng) {
+    yaml += `---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ${name}-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - host: ${name}.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ${name}-svc
+                port:
+                  number: 80
+`;
+  }
+
+  if (wantCm) {
+    yaml += `---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ${name}-config
+data:
+  APP_ENV: "production"
+  LOG_LEVEL: "info"
+`;
+  }
+
+  document.getElementById('k8s-output').textContent = yaml;
+}
+
+// ===== CI/CD =====
+function genCICD() {
+  const platform = document.querySelector('#ci-platform .chip.active').dataset.platform;
+  const version = document.getElementById('ci-version').value || '20';
+  const build = document.getElementById('ci-build').classList.contains('active');
+  const test = document.getElementById('ci-test').classList.contains('active');
+  const deploy = document.getElementById('ci-deploy').classList.contains('active');
+  const docker = document.getElementById('ci-docker').classList.contains('active');
+  let out = '', filename = '';
+
+  if (platform === 'github') {
+    filename = '.github/workflows/ci.yml';
+    out = `name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '${version}'
+${build ? `
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+` : ''}${test ? `
+      - name: Run tests
+        run: npm test
+` : ''}${docker ? `
+      - name: Build & push Docker image
+        run: |
+          docker build -t \${{ secrets.DOCKER_USER }}/myapp:\${{ github.sha }} .
+          echo "\${{ secrets.DOCKER_PASS }}" | docker login -u "\${{ secrets.DOCKER_USER }}" --password-stdin
+          docker push \${{ secrets.DOCKER_USER }}/myapp:\${{ github.sha }}
+` : ''}${deploy ? `
+      - name: Deploy
+        run: echo "Add your deploy step here (e.g. kubectl apply, SSH, or cloud CLI)"
+` : ''}`;
+  } else if (platform === 'jenkins') {
+    filename = 'Jenkinsfile';
+    out = `pipeline {
+    agent any
+
+    environment {
+        NODE_VERSION = '${version}'
+    }
+
+    stages {
+${build ? `        stage('Build') {
+            steps {
+                sh 'npm ci'
+                sh 'npm run build'
+            }
+        }
+` : ''}${test ? `        stage('Test') {
+            steps {
+                sh 'npm test'
+            }
+        }
+` : ''}${docker ? `        stage('Docker Build & Push') {
+            steps {
+                sh 'docker build -t myrepo/myapp:\${env.BUILD_NUMBER} .'
+                sh 'docker push myrepo/myapp:\${env.BUILD_NUMBER}'
+            }
+        }
+` : ''}${deploy ? `        stage('Deploy') {
+            steps {
+                echo 'Add your deploy step here'
+            }
+        }
+` : ''}    }
+
+    post {
+        success { echo 'Pipeline succeeded ✓' }
+        failure { echo 'Pipeline failed ✗' }
+    }
+}`;
+  } else {
+    filename = '.gitlab-ci.yml';
+    out = `stages:
+${build ? '  - build\n' : ''}${test ? '  - test\n' : ''}${docker ? '  - docker\n' : ''}${deploy ? '  - deploy\n' : ''}
+image: node:${version}
+${build ? `
+build:
+  stage: build
+  script:
+    - npm ci
+    - npm run build
+` : ''}${test ? `
+test:
+  stage: test
+  script:
+    - npm test
+` : ''}${docker ? `
+docker:
+  stage: docker
+  image: docker:latest
+  services: [docker:dind]
+  script:
+    - docker build -t myrepo/myapp:$CI_COMMIT_SHA .
+    - docker push myrepo/myapp:$CI_COMMIT_SHA
+` : ''}${deploy ? `
+deploy:
+  stage: deploy
+  script:
+    - echo "Add your deploy step here"
+` : ''}`;
+  }
+  document.getElementById('cicd-output').textContent = out;
+  document.getElementById('ci-filename').textContent = filename;
+}
+
+// ===== TERRAFORM =====
+function genTerraform() {
+  const type = document.querySelector('#tf-type .chip.active').dataset.type;
+  const name = document.getElementById('tf-name').value || 'web_server';
+  const region = document.getElementById('tf-region').value || 'us-east-1';
+  let out = `provider "aws" {
+  region = "${region}"
+}
+
+`;
+  if (type === 'ec2') {
+    out += `resource "aws_instance" "${name}" {
+  ami           = "ami-0c55b159cbfafe1f0"  # update for your region
+  instance_type = "t2.micro"
+
+  tags = {
+    Name = "${name}"
+  }
+
+  vpc_security_group_ids = [aws_security_group.${name}_sg.id]
+}
+
+resource "aws_security_group" "${name}_sg" {
+  name        = "${name}-sg"
+  description = "Allow SSH and HTTP"
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}`;
+  } else if (type === 's3') {
+    out += `resource "aws_s3_bucket" "${name}" {
+  bucket = "${name.replace(/_/g, '-')}-bucket"
+
+  tags = {
+    Name = "${name}"
+  }
+}
+
+resource "aws_s3_bucket_versioning" "${name}_versioning" {
+  bucket = aws_s3_bucket.${name}.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+resource "aws_s3_bucket_public_access_block" "${name}_block" {
+  bucket                  = aws_s3_bucket.${name}.id
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}`;
+  } else {
+    out += `resource "aws_vpc" "${name}" {
+  cidr_block           = "10.0.0.0/16"
+  enable_dns_support   = true
+  enable_dns_hostnames = true
+
+  tags = {
+    Name = "${name}"
+  }
+}
+
+resource "aws_subnet" "${name}_public" {
+  vpc_id                  = aws_vpc.${name}.id
+  cidr_block              = "10.0.1.0/24"
+  map_public_ip_on_launch = true
+  availability_zone       = "${region}a"
+
+  tags = {
+    Name = "${name}-public"
+  }
+}
+
+resource "aws_internet_gateway" "${name}_igw" {
+  vpc_id = aws_vpc.${name}.id
+}
+
+resource "aws_route_table" "${name}_rt" {
+  vpc_id = aws_vpc.${name}.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.${name}_igw.id
+  }
+}`;
+  }
+  document.getElementById('tf-output').textContent = out;
+}
+
+// ===== ANSIBLE =====
+function genAnsible() {
+  const type = document.querySelector('#an-type .chip.active').dataset.type;
+  const hosts = document.getElementById('an-hosts').value || 'webservers';
+  let out = `---
+- name: ${type === 'webserver' ? 'Install and configure web server' : type === 'docker' ? 'Install Docker' : 'Create user with SSH key'}
+  hosts: ${hosts}
+  become: true
+
+  tasks:
+`;
+  if (type === 'webserver') {
+    out += `    - name: Install Nginx
+      apt:
+        name: nginx
+        state: present
+        update_cache: true
+
+    - name: Start and enable Nginx
+      service:
+        name: nginx
+        state: started
+        enabled: true
+
+    - name: Copy index page
+      copy:
+        src: files/index.html
+        dest: /var/www/html/index.html`;
+  } else if (type === 'docker') {
+    out += `    - name: Install prerequisite packages
+      apt:
+        name: ['apt-transport-https', 'ca-certificates', 'curl', 'gnupg']
+        state: present
+        update_cache: true
+
+    - name: Add Docker GPG key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker repository
+      apt_repository:
+        repo: "deb https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+        state: present
+
+    - name: Install Docker
+      apt:
+        name: docker-ce
+        state: present
+        update_cache: true
+
+    - name: Ensure Docker is running
+      service:
+        name: docker
+        state: started
+        enabled: true`;
+  } else {
+    out += `    - name: Create deploy user
+      user:
+        name: deploy
+        shell: /bin/bash
+        groups: sudo
+        append: true
+
+    - name: Set up authorized SSH key
+      authorized_key:
+        user: deploy
+        state: present
+        key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"`;
+  }
+  document.getElementById('an-output').textContent = out;
+}
+
+// Init all generators on load
+genDockerRun(); genDockerfile(); genK8s(); genCICD(); genTerraform(); genAnsible();
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>
