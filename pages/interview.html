@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interview Prep — DevOpsHub AI</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚙️</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div id="scroll-progress"></div>
+<div class="bg-grid"></div>
+
+<nav id="nav">
+  <a href="../index.html" class="nav-logo">
+    <div class="nav-logo-mark">⚙️</div>
+    <span class="nav-logo-text">DevOps<span>Hub</span> AI</span>
+  </a>
+  <div class="nav-links" id="nav-links">
+    <a href="../index.html">Home</a>
+    <a href="labs.html">Labs</a>
+    <a href="tools.html">Tools</a>
+    <a href="generators.html">Generators</a>
+    <a href="troubleshoot.html">Troubleshoot</a>
+    <a href="roadmap.html">Roadmap</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="interview.html" class="active">Interview Prep</a>
+    <a href="resume.html">Resume</a>
+    <a href="assistant.html">AI Assistant</a>
+  </div>
+  <div class="nav-cta">
+    <a href="assistant.html" class="btn btn-cyan btn-sm">Launch AI ✦</a>
+    <button class="nav-toggle" id="nav-toggle"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<main>
+<div class="page-hero">
+  <div class="eyebrow center" style="justify-content:center">Interview Preparation</div>
+  <h1>Ace Your DevOps Interview</h1>
+  <p>Beginner to advanced questions across 5 core categories, with model answers.</p>
+</div>
+
+<section>
+  <div class="wrap">
+    <div class="iv-tabs reveal">
+      <button class="chip active" data-cat="docker" onclick="setIVCat(this)">🐳 Docker</button>
+      <button class="chip" data-cat="kubernetes" onclick="setIVCat(this)">☸️ Kubernetes</button>
+      <button class="chip" data-cat="linux" onclick="setIVCat(this)">🐧 Linux</button>
+      <button class="chip" data-cat="aws" onclick="setIVCat(this)">☁️ AWS</button>
+      <button class="chip" data-cat="cicd" onclick="setIVCat(this)">🔁 CI/CD</button>
+    </div>
+    <div class="iv-level-tabs reveal">
+      <button class="chip active" data-level="beginner" onclick="setIVLevel(this)">Beginner</button>
+      <button class="chip" data-level="intermediate" onclick="setIVLevel(this)">Intermediate</button>
+      <button class="chip" data-level="advanced" onclick="setIVLevel(this)">Advanced</button>
+    </div>
+    <div id="iv-results" style="max-width:760px;margin:0 auto"></div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="footer-bottom" style="border-top:none;justify-content:center">
+    <p>© 2026 DevOpsHub AI · <a href="../index.html" style="color:var(--cyan)">Back to Home</a></p>
+  </div>
+</footer>
+
+<button id="back-top">↑</button>
+
+<script src="../data/tools-data.js"></script>
+<script>
+let ivCat = 'docker', ivLevel = 'beginner';
+
+function setIVCat(el) {
+  document.querySelectorAll('.iv-tabs .chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  ivCat = el.dataset.cat;
+  renderIV();
+}
+function setIVLevel(el) {
+  document.querySelectorAll('.iv-level-tabs .chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  ivLevel = el.dataset.level;
+  renderIV();
+}
+
+function renderIV() {
+  const qs = (INTERVIEW_QUESTIONS[ivCat] && INTERVIEW_QUESTIONS[ivCat][ivLevel]) || [];
+  const container = document.getElementById('iv-results');
+  if (!qs.length) {
+    container.innerHTML = `<div class="center" style="padding:3rem;color:var(--muted)">No questions yet for this combination — try another level.</div>`;
+    return;
+  }
+  container.innerHTML = qs.map((item, i) => `
+    <div class="iv-item glass" onclick="this.classList.toggle('open')">
+      <div class="iv-q"><span>${i+1}. ${item.q}</span><span class="iv-arrow">▼</span></div>
+      <div class="iv-a"><p>${item.a}</p></div>
+    </div>
+  `).join('');
+}
+renderIV();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

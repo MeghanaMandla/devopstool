@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Docker & Kubernetes Lab — DevOpsHub AI</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐳</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div id="scroll-progress"></div>
+<div class="bg-grid"></div>
+
+<nav id="nav">
+  <a href="../index.html" class="nav-logo">
+    <div class="nav-logo-mark">⚙️</div>
+    <span class="nav-logo-text">DevOps<span>Hub</span> AI</span>
+  </a>
+  <div class="nav-links" id="nav-links">
+    <a href="../index.html">Home</a>
+    <a href="labs.html">Labs</a>
+    <a href="tools.html">Tools</a>
+    <a href="generators.html">Generators</a>
+    <a href="troubleshoot.html">Troubleshoot</a>
+    <a href="roadmap.html">Roadmap</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="interview.html">Interview Prep</a>
+    <a href="assistant.html">AI Assistant</a>
+  </div>
+  <div class="nav-cta">
+    <a href="assistant.html" class="btn btn-cyan btn-sm">Launch AI ✦</a>
+    <button class="nav-toggle" id="nav-toggle"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<main>
+<div class="page-hero" style="padding-bottom:20px">
+  <div class="eyebrow center" style="justify-content:center">Container Labs</div>
+  <h1>🐳 Docker & ☸️ Kubernetes Trainer</h1>
+  <p>Real container/pod state. Run actual docker and kubectl commands — full validated output.</p>
+</div>
+
+<div class="wrap" style="margin-bottom:2rem">
+  <div class="ts-filters reveal">
+    <button class="chip active" id="tab-docker" onclick="switchTab('docker')">🐳 Docker</button>
+    <button class="chip" id="tab-k8s" onclick="switchTab('k8s')">☸️ Kubernetes</button>
+  </div>
+</div>
+
+<!-- DOCKER LAB -->
+<section style="padding-top:0" id="panel-docker">
+  <div class="wrap">
+    <div class="lab-layout reveal">
+      <div class="lab-term-wrap">
+        <div class="lab-term-bar">
+          <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+          <span class="fname">user@devopshub:~$ (docker)</span>
+        </div>
+        <div id="terminal-docker" style="min-height:440px"></div>
+      </div>
+      <div class="lab-sidebar glass">
+        <h4>Try These Commands</h4>
+        <div class="lab-cmd-list">
+          <button class="lab-cmd-chip" data-term="docker" data-cmd="docker images">docker images</button>
+          <button class="lab-cmd-chip" data-term="docker" data-cmd="docker pull redis:latest">docker pull redis</button>
+          <button class="lab-cmd-chip" data-term="docker" data-cmd="docker run -d --name web -p 8080:80 nginx">docker run -d ...</button>
+          <button class="lab-cmd-chip" data-term="docker" data-cmd="docker ps">docker ps</button>
+          <button class="lab-cmd-chip" data-term="docker" data-cmd="docker ps -a">docker ps -a</button>
+          <button class="lab-cmd-chip" data-term="docker" data-cmd="docker logs web">docker logs web</button>
+          <button class="lab-cmd-chip" data-term="docker" data-cmd="docker stop web">docker stop web</button>
+          <button class="lab-cmd-chip" data-term="docker" data-cmd="docker rm web">docker rm web</button>
+          <button class="lab-cmd-chip" data-term="docker" data-cmd="docker build -t myapp:latest .">docker build -t ...</button>
+        </div>
+        <div class="lab-task-box">
+          <h5>🎯 Practice Task</h5>
+          Run an nginx container named <code style="color:var(--cyan)">web</code> on port 8080, check it's running with <code style="color:var(--cyan)">ps</code>, then stop and remove it.
+        </div>
+        <button class="btn btn-ghost lab-reset-btn" onclick="resetDocker()">↺ Reset Docker State</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- K8S LAB -->
+<section style="padding-top:0;display:none" id="panel-k8s">
+  <div class="wrap">
+    <div class="lab-layout reveal">
+      <div class="lab-term-wrap">
+        <div class="lab-term-bar">
+          <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+          <span class="fname">user@devopshub:~$ (kubectl)</span>
+        </div>
+        <div id="terminal-k8s" style="min-height:440px"></div>
+      </div>
+      <div class="lab-sidebar glass">
+        <h4>Try These Commands</h4>
+        <div class="lab-cmd-list">
+          <button class="lab-cmd-chip" data-term="k8s" data-cmd="kubectl get pods">kubectl get pods</button>
+          <button class="lab-cmd-chip" data-term="k8s" data-cmd="kubectl get deployments">kubectl get deployments</button>
+          <button class="lab-cmd-chip" data-term="k8s" data-cmd="kubectl get services">kubectl get services</button>
+          <button class="lab-cmd-chip" data-term="k8s" data-cmd="kubectl get nodes">kubectl get nodes</button>
+          <button class="lab-cmd-chip" data-term="k8s" data-cmd="kubectl apply -f deployment.yaml">kubectl apply -f ...</button>
+          <button class="lab-cmd-chip" data-term="k8s" data-cmd="kubectl describe pod frontend-7d9f8-x8k2p">kubectl describe pod ...</button>
+          <button class="lab-cmd-chip" data-term="k8s" data-cmd="kubectl scale deployment backend --replicas=4">kubectl scale ...</button>
+          <button class="lab-cmd-chip" data-term="k8s" data-cmd="kubectl logs frontend-7d9f8-x8k2p">kubectl logs ...</button>
+          <button class="lab-cmd-chip" data-term="k8s" data-cmd="kubectl delete pod cache-redis-0">kubectl delete pod ...</button>
+        </div>
+        <div class="lab-task-box">
+          <h5>🎯 Practice Task</h5>
+          List all pods, scale the <code style="color:var(--cyan)">backend</code> deployment to 4 replicas, then confirm with <code style="color:var(--cyan)">get deployments</code>.
+        </div>
+        <button class="btn btn-ghost lab-reset-btn" onclick="resetK8s()">↺ Reset Cluster State</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="footer-bottom" style="border-top:none;justify-content:center">
+    <p>© 2026 DevOpsHub AI · <a href="../index.html" style="color:var(--cyan)">Back to Home</a></p>
+  </div>
+</footer>
+
+<button id="back-top">↑</button>
+
+<script src="../data/docker-k8s-sim.js"></script>
+<script src="../js/terminal-widget.js"></script>
+<script>
+let dockerState, k8sState, termDocker, termK8s;
+
+function initDocker() {
+  dockerState = createDockerState();
+  termDocker = createTerminalWidget(document.getElementById('terminal-docker'), {
+    prompt: 'user@devopshub:~$',
+    welcome: 'Welcome to the DevOpsHub Docker Lab 🐳\nReal container state — try: docker images, run, ps, stop, rm, build…\n',
+    onCommand: (cmd) => runDockerCommand(dockerState, cmd)
+  });
+}
+function initK8s() {
+  k8sState = createK8sState();
+  termK8s = createTerminalWidget(document.getElementById('terminal-k8s'), {
+    prompt: 'user@devopshub:~$',
+    welcome: 'Welcome to the DevOpsHub Kubernetes Lab ☸️\nReal cluster state — try: kubectl get pods, apply, scale, describe…\n',
+    onCommand: (cmd) => runK8sCommand(k8sState, cmd)
+  });
+}
+function resetDocker() { initDocker(); }
+function resetK8s() { initK8s(); }
+
+function switchTab(which) {
+  document.getElementById('tab-docker').classList.toggle('active', which === 'docker');
+  document.getElementById('tab-k8s').classList.toggle('active', which === 'k8s');
+  document.getElementById('panel-docker').style.display = which === 'docker' ? '' : 'none';
+  document.getElementById('panel-k8s').style.display = which === 'k8s' ? '' : 'none';
+  if (which === 'docker') termDocker.focus(); else termK8s.focus();
+}
+
+document.querySelectorAll('.lab-cmd-chip').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = btn.dataset.term === 'docker' ? termDocker : termK8s;
+    t.runCommand(btn.dataset.cmd);
+    t.focus();
+  });
+});
+
+initDocker();
+initK8s();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

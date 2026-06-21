@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Help Center — DevOpsHub AI</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚙️</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div id="scroll-progress"></div>
+<div class="bg-grid"></div>
+
+<nav id="nav">
+  <a href="../index.html" class="nav-logo">
+    <div class="nav-logo-mark">⚙️</div>
+    <span class="nav-logo-text">DevOps<span>Hub</span> AI</span>
+  </a>
+  <div class="nav-links" id="nav-links">
+    <a href="../index.html">Home</a>
+    <a href="labs.html">Labs</a>
+    <a href="tools.html">Tools</a>
+    <a href="generators.html">Generators</a>
+    <a href="troubleshoot.html">Troubleshoot</a>
+    <a href="roadmap.html">Roadmap</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="interview.html">Interview Prep</a>
+    <a href="resume.html">Resume</a>
+    <a href="assistant.html">AI Assistant</a>
+  </div>
+  <div class="nav-cta">
+    <a href="assistant.html" class="btn btn-cyan btn-sm">Launch AI ✦</a>
+    <button class="nav-toggle" id="nav-toggle"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<main>
+<div class="page-hero">
+  <div class="eyebrow center" style="justify-content:center">Help Center</div>
+  <h1>How can we help?</h1>
+  <p>Common questions about using DevOpsHub AI.</p>
+</div>
+
+<section>
+  <div class="wrap" style="max-width:760px">
+    <div class="iv-item glass reveal" onclick="this.classList.toggle('open')">
+      <div class="iv-q"><span>Is DevOpsHub AI really free?</span><span class="iv-arrow">▼</span></div>
+      <div class="iv-a"><p>Yes — every tool, generator, and the AI assistant are completely free with no sign-up required. Everything runs directly in your browser.</p></div>
+    </div>
+    <div class="iv-item glass reveal" onclick="this.classList.toggle('open')">
+      <div class="iv-q"><span>Do I need to create an account?</span><span class="iv-arrow">▼</span></div>
+      <div class="iv-a"><p>No. There are no accounts, logins, or saved data on our servers. Each tool works statelessly — generate what you need and copy or download it.</p></div>
+    </div>
+    <div class="iv-item glass reveal" onclick="this.classList.toggle('open')">
+      <div class="iv-q"><span>Is my data sent anywhere?</span><span class="iv-arrow">▼</span></div>
+      <div class="iv-a"><p>Generators (Docker, K8s, Terraform, etc.) run 100% locally in your browser — nothing is sent anywhere. The AI Assistant sends your message to Anthropic's Claude API to generate a response, the same as any AI chat tool.</p></div>
+    </div>
+    <div class="iv-item glass reveal" onclick="this.classList.toggle('open')">
+      <div class="iv-q"><span>Can I use the generated YAML/Dockerfiles in production?</span><span class="iv-arrow">▼</span></div>
+      <div class="iv-a"><p>The generators produce solid starting templates following common best practices (multi-stage builds, resource limits, health probes). Always review and adjust for your specific security and scaling requirements before production use.</p></div>
+    </div>
+    <div class="iv-item glass reveal" onclick="this.classList.toggle('open')">
+      <div class="iv-q"><span>The dashboard numbers look fake — are they real metrics?</span><span class="iv-arrow">▼</span></div>
+      <div class="iv-a"><p>Correct — the Monitoring Dashboard is a simulation for demonstration and learning purposes. It is not connected to any real infrastructure.</p></div>
+    </div>
+    <div class="iv-item glass reveal" onclick="this.classList.toggle('open')">
+      <div class="iv-q"><span>I found a bug or want to suggest a tool. Where do I report it?</span><span class="iv-arrow">▼</span></div>
+      <div class="iv-a"><p>Open an issue on our GitHub repository, or reach out via the contact links in the footer.</p></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="footer-bottom" style="border-top:none;justify-content:center">
+    <p>© 2026 DevOpsHub AI · <a href="../index.html" style="color:var(--cyan)">Back to Home</a></p>
+  </div>
+</footer>
+
+<button id="back-top">↑</button>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

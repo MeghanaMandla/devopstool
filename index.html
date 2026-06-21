@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DevOpsHub AI — Build. Deploy. Scale.</title>
+<meta name="description" content="A free, all-in-one DevOps platform: Docker & Kubernetes generators, Linux command finder, troubleshooting center, interview prep, resume builder, and AI assistant.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚙️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div id="scroll-progress"></div>
+<div class="bg-grid"></div>
+<canvas id="webgl-bg"></canvas>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-mark">⚙️</div>
+    <span class="nav-logo-text">DevOps<span>Hub</span> AI</span>
+  </a>
+  <div class="nav-links" id="nav-links">
+    <a href="index.html">Home</a>
+    <a href="pages/labs.html">Labs</a>
+    <a href="pages/tools.html">Tools</a>
+    <a href="pages/generators.html">Generators</a>
+    <a href="pages/troubleshoot.html">Troubleshoot</a>
+    <a href="pages/roadmap.html">Roadmap</a>
+    <a href="pages/dashboard.html">Dashboard</a>
+    <a href="pages/interview.html">Interview Prep</a>
+    <a href="pages/resume.html">Resume</a>
+    <a href="pages/assistant.html">AI Assistant</a>
+  </div>
+  <div class="nav-cta">
+    <a href="pages/assistant.html" class="btn btn-cyan btn-sm">Launch AI ✦</a>
+    <button class="nav-toggle" id="nav-toggle"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<main>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-badge"><span class="live-dot"></span> 100% Free · No Sign-up · Runs in your Browser</div>
+  <h1 class="hero-title">Build. Deploy. Scale.<br>with <span class="grad">DevOpsHub AI</span></h1>
+  <p class="hero-sub">The all-in-one toolkit for DevOps engineers — generate Docker & Kubernetes configs, search Linux commands, debug production errors, and prep for interviews. All free, all in your browser.</p>
+  <div class="hero-actions">
+    <a href="pages/generators.html" class="btn btn-cyan">Explore Tools →</a>
+    <a href="pages/roadmap.html" class="btn btn-ghost">Start Learning</a>
+    <a href="pages/assistant.html" class="btn btn-violet">Launch AI Assistant ✦</a>
+  </div>
+
+  <!-- SIGNATURE TERMINAL -->
+  <div class="terminal">
+    <div class="terminal-bar">
+      <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+      <span>devops@hub:~</span>
+    </div>
+    <div class="terminal-body" id="terminal-body"></div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stat-strip">
+    <div class="stat"><span class="stat-num" data-target="14">0</span><span class="stat-label">DevOps Tools</span></div>
+    <div class="stat"><span class="stat-num" data-target="30">0</span><span class="stat-label">Linux Commands</span></div>
+    <div class="stat"><span class="stat-num" data-target="19">0</span><span class="stat-label">Troubleshoot Guides</span></div>
+    <div class="stat"><span class="stat-num" data-target="40">0</span><span class="stat-label">Interview Questions</span></div>
+  </div>
+</section>
+
+<!-- INTERACTIVE LABS -->
+<section id="labs-showcase">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <div class="eyebrow">Hands-On Practice</div>
+      <h2 class="sec-title">Interactive Command-Line Labs</h2>
+      <p class="sec-sub">Real terminal trainers with actual working state — type real commands, get real validated output.</p>
+    </div>
+    <div class="feature-grid">
+      <a href="pages/linux-lab.html" class="feature-card glass reveal">
+        <div class="feature-icon">🐧</div>
+        <div class="feature-title">Linux Terminal Lab</div>
+        <div class="feature-desc">A real virtual filesystem — ls, cd, mkdir, cat, grep, ps, systemctl, journalctl, and more.</div>
+        <span class="feature-link">Open terminal →</span>
+      </a>
+      <a href="pages/git-lab.html" class="feature-card glass reveal">
+        <div class="feature-icon">📦</div>
+        <div class="feature-title">Git Command Trainer</div>
+        <div class="feature-desc">Real commit/branch state machine. Watch the branch graph update live as you commit and merge.</div>
+        <span class="feature-link">Open terminal →</span>
+      </a>
+      <a href="pages/container-lab.html" class="feature-card glass reveal">
+        <div class="feature-icon">🐳</div>
+        <div class="feature-title">Docker & Kubernetes Trainer</div>
+        <div class="feature-desc">Real container/pod state. Run docker run/ps/stop and kubectl get/apply/scale with validated output.</div>
+        <span class="feature-link">Open terminal →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <div class="eyebrow">Platform</div>
+      <h2 class="sec-title">Everything a DevOps Engineer Needs</h2>
+      <p class="sec-sub">Generators, references, and an AI assistant — all running free, right in your browser.</p>
+    </div>
+    <div class="feature-grid">
+      <a href="pages/generators.html#docker" class="feature-card glass reveal">
+        <div class="feature-icon">🐳</div>
+        <div class="feature-title">Docker Toolkit</div>
+        <div class="feature-desc">Generate Docker run commands and production-ready Dockerfiles for Node, Python, Java, or React.</div>
+        <span class="feature-link">Open generator →</span>
+      </a>
+      <a href="pages/generators.html#k8s" class="feature-card glass reveal">
+        <div class="feature-icon">☸️</div>
+        <div class="feature-title">Kubernetes Hub</div>
+        <div class="feature-desc">Generate Deployment, Service, Ingress, and ConfigMap YAML files instantly — with download buttons.</div>
+        <span class="feature-link">Open generator →</span>
+      </a>
+      <a href="pages/generators.html#cicd" class="feature-card glass reveal">
+        <div class="feature-icon">🔁</div>
+        <div class="feature-title">CI/CD Builder</div>
+        <div class="feature-desc">Generate GitHub Actions and Jenkins pipeline files customized for build, test, and deploy stages.</div>
+        <span class="feature-link">Open generator →</span>
+      </a>
+      <a href="pages/tools.html#linux" class="feature-card glass reveal">
+        <div class="feature-icon">🐧</div>
+        <div class="feature-title">Linux Command Center</div>
+        <div class="feature-desc">Search 30+ everyday Linux commands with explanations, examples, and related commands.</div>
+        <span class="feature-link">Search commands →</span>
+      </a>
+      <a href="pages/dashboard.html" class="feature-card glass reveal">
+        <div class="feature-icon">📊</div>
+        <div class="feature-title">Monitoring Stack</div>
+        <div class="feature-desc">A live-feeling simulated dashboard: CPU, RAM, disk, network traffic, and Kubernetes pod status.</div>
+        <span class="feature-link">View dashboard →</span>
+      </a>
+      <a href="pages/generators.html#iac" class="feature-card glass reveal">
+        <div class="feature-icon">🏗️</div>
+        <div class="feature-title">Infrastructure as Code</div>
+        <div class="feature-desc">Generate Terraform resource blocks and Ansible playbooks for common provisioning tasks.</div>
+        <span class="feature-link">Open generator →</span>
+      </a>
+      <a href="pages/assistant.html" class="feature-card glass reveal">
+        <div class="feature-icon">🤖</div>
+        <div class="feature-title">DevOps AI Assistant</div>
+        <div class="feature-desc">Chat with an AI trained on this platform's knowledge — troubleshoot errors, generate YAML, explain concepts.</div>
+        <span class="feature-link">Launch assistant →</span>
+      </a>
+      <a href="pages/troubleshoot.html" class="feature-card glass reveal">
+        <div class="feature-icon">🚨</div>
+        <div class="feature-title">Troubleshooting Center</div>
+        <div class="feature-desc">19 real-world error guides across Docker, K8s, Linux, Jenkins, Git, AWS, and Terraform.</div>
+        <span class="feature-link">Browse errors →</span>
+      </a>
+      <a href="pages/interview.html" class="feature-card glass reveal">
+        <div class="feature-icon">💼</div>
+        <div class="feature-title">Interview Preparation</div>
+        <div class="feature-desc">Beginner to advanced DevOps interview questions with model answers across 5 categories.</div>
+        <span class="feature-link">Start prepping →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP PREVIEW -->
+<section id="roadmap-preview">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <div class="eyebrow">Learning Path</div>
+      <h2 class="sec-title">The DevOps Roadmap</h2>
+      <p class="sec-sub">11 milestones from zero to production-ready. Click any node on the full roadmap page for resources and projects.</p>
+    </div>
+    <div class="feature-grid reveal" style="grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:.75rem">
+      <div class="glass center" style="padding:1.25rem .5rem"><div style="font-size:1.5rem">🐧</div><div style="font-size:.78rem;margin-top:.4rem;font-weight:600">Linux</div></div>
+      <div class="glass center" style="padding:1.25rem .5rem"><div style="font-size:1.5rem">📦</div><div style="font-size:.78rem;margin-top:.4rem;font-weight:600">Git</div></div>
+      <div class="glass center" style="padding:1.25rem .5rem"><div style="font-size:1.5rem">🐙</div><div style="font-size:.78rem;margin-top:.4rem;font-weight:600">GitHub</div></div>
+      <div class="glass center" style="padding:1.25rem .5rem"><div style="font-size:1.5rem">🐳</div><div style="font-size:.78rem;margin-top:.4rem;font-weight:600">Docker</div></div>
+      <div class="glass center" style="padding:1.25rem .5rem"><div style="font-size:1.5rem">☸️</div><div style="font-size:.78rem;margin-top:.4rem;font-weight:600">K8s</div></div>
+      <div class="glass center" style="padding:1.25rem .5rem"><div style="font-size:1.5rem">⚙️</div><div style="font-size:.78rem;margin-top:.4rem;font-weight:600">Jenkins</div></div>
+      <div class="glass center" style="padding:1.25rem .5rem"><div style="font-size:1.5rem">🏗️</div><div style="font-size:.78rem;margin-top:.4rem;font-weight:600">Terraform</div></div>
+      <div class="glass center" style="padding:1.25rem .5rem"><div style="font-size:1.5rem">🔧</div><div style="font-size:.78rem;margin-top:.4rem;font-weight:600">Ansible</div></div>
+      <div class="glass center" style="padding:1.25rem .5rem"><div style="font-size:1.5rem">☁️</div><div style="font-size:.78rem;margin-top:.4rem;font-weight:600">AWS</div></div>
+      <div class="glass center" style="padding:1.25rem .5rem"><div style="font-size:1.5rem">📊</div><div style="font-size:.78rem;margin-top:.4rem;font-weight:600">Monitor</div></div>
+      <div class="glass center" style="padding:1.25rem .5rem"><div style="font-size:1.5rem">🔐</div><div style="font-size:.78rem;margin-top:.4rem;font-weight:600">DevSecOps</div></div>
+    </div>
+    <div class="center mt-2">
+      <a href="pages/roadmap.html" class="btn btn-ghost">View Full Roadmap →</a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="wrap">
+    <div class="glass reveal" style="padding:3.5rem 2.5rem;text-align:center;background:linear-gradient(135deg,rgba(0,240,255,.06),rgba(124,92,255,.04))">
+      <h2 class="sec-title" style="margin-bottom:.75rem">Ready to level up your DevOps skills?</h2>
+      <p class="sec-sub" style="margin:0 auto 2rem">Everything here is free. No account needed — just open a tool and start building.</p>
+      <div class="hero-actions" style="opacity:1;margin-bottom:0">
+        <a href="pages/generators.html" class="btn btn-cyan">Try the Generators →</a>
+        <a href="pages/assistant.html" class="btn btn-violet">Ask the AI Assistant ✦</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="nav-logo"><div class="nav-logo-mark">⚙️</div><span class="nav-logo-text">DevOps<span>Hub</span> AI</span></div>
+      <p>A free, all-in-one DevOps platform — generators, references, troubleshooting, and AI assistance for engineers at every level.</p>
+      <div class="footer-social">
+        <a href="https://github.com" target="_blank" title="GitHub">🐙</a>
+        <a href="https://linkedin.com" target="_blank" title="LinkedIn">💼</a>
+        <a href="mailto:hello@devopshub.ai" title="Email">📧</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h5>Tools</h5>
+      <a href="pages/generators.html">Generators</a>
+      <a href="pages/tools.html">Tools Directory</a>
+      <a href="pages/troubleshoot.html">Troubleshooting</a>
+      <a href="pages/dashboard.html">Monitoring Dashboard</a>
+    </div>
+    <div class="footer-col">
+      <h5>Learn</h5>
+      <a href="pages/roadmap.html">Roadmap</a>
+      <a href="pages/interview.html">Interview Prep</a>
+      <a href="pages/resume.html">Resume Builder</a>
+    </div>
+    <div class="footer-col">
+      <h5>More</h5>
+      <a href="pages/assistant.html">AI Assistant</a>
+      <a href="pages/help.html">Help Center</a>
+      <a href="pages/about.html">About</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 DevOpsHub AI · Built for engineers, by engineers</p>
+    <p>Free forever · No tracking · No accounts</p>
+  </div>
+</footer>
+
+<button id="back-top">↑</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="js/webgl-bg.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
